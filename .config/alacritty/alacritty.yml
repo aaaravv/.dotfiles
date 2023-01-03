@@ -1,0 +1,177 @@
+## Alacritty, the GPU enhanced terminal emulator.
+
+env:
+    TERM: xterm-256color
+
+font:
+    normal:
+        family: JetBrainsMono Nerd Font
+        style: Regular
+
+    bold:
+        family: JetBrainsMono Nerd Font
+        style: Bold
+
+    italic:
+        family: JetBrainsMono Nerd Font
+
+        style: Italic
+
+    bold_italic:
+        family: JetBrainsMono Nerd Font
+        style: Bold Italic
+
+    size: 12.0
+
+    offset:
+        x: 0
+        y: 0
+
+    glyph_offset:
+        x: 0
+        y: 0
+
+### Color Schemes ###
+schemes:
+    basic: &basic
+        primary:
+            background: "#151515"
+            foreground: "#ffffff"
+
+        cursor:
+            text: "#ffffff"
+            cursor: "#ffffff"
+
+        normal:
+            black: "#131020"
+            red: "#d78787"
+            green: "#00E676"
+            yellow: "#ffdf00"
+            blue: "#00B0FF"
+            magenta: "#f299e6"
+            cyan: "#89DCEB"
+            white: "#eaeaea"
+
+        bright:
+            black: "#131020"
+            red: "#d78787"
+            green: "#00E676"
+            yellow: "#ffdf00"
+            blue: "#00B0FF"
+            magenta: "#f299e6"
+            cyan: "#B5E8E0"
+            white: "#eaeaea"
+
+    palenight: &palenight
+        primary:
+            background: "#151515"
+            foreground: "#d8dee9"
+
+        normal:
+            black: "#292d3e"
+            red: "#f07178"
+            green: "#c3e88d"
+            yellow: "#ffcb6b"
+            blue: "#82aaff"
+            magenta: "#c792ea"
+            cyan: "#89ddff"
+            white: "#ffffff"
+
+        bright:
+            black: "#676e95"
+            red: "#f07178"
+            green: "#c3e88d"
+            yellow: "#ffcb6b"
+            blue: "#682aaf"
+            magenta: "#c792ea"
+            cyan: "#89ddff"
+            white: "#ffffff"
+
+    everforest: &everforest
+        primary:
+            background: "#272e33"
+            foreground: "#d8dee9"
+
+        normal:
+            black: "#4b565c"
+            red: "#e67e80"
+            green: "#a7c080"
+            yellow: "#dbbc7f"
+            blue: "#7fbbb3"
+            magenta: "#d699b6"
+            cyan: "#83c092"
+            white: "#d3c6aa"
+
+        bright:
+            black: "#4b565c"
+            red: "#e67e80"
+            green: "#a7c080"
+            yellow: "#dbbc7f"
+            blue: "#7fbbb3"
+            magenta: "#d699b6"
+            cyan: "#83c092"
+            white: "#d3c6aa"
+
+    nord: &nord
+        primary:
+            background: "#2e3440"
+            foreground: "#d8dee9"
+            
+        normal:
+            black: "#3b4252"
+            red: "#bf616a"
+            green: "#a3be8c"
+            yellow: "#ebcb8b"
+            blue: "#81a1c1"
+            magenta: "#b48ead"
+            cyan: "#88c0d0"
+            white: "#e5e9f0"
+
+        bright:
+            black: "#4c566a"
+            red: "#bf616a"
+            green: "#a3be8c"
+            yellow: "#ebcb8b"
+            blue: "#81a1c1"
+            magenta: "#b48ead"
+            cyan: "#8fbcbb"
+            white: "#eceff4"
+
+    catppuccin: &catppuccin
+        primary:
+            background: "#1E1E2E"
+            foreground: "#D9E0EE"
+
+        normal:
+            black: "#6E6C7E"
+            red: "#F28FAD"
+            green: "#ABE9B3"
+            yellow: "#FAE3B0"
+            blue: "#96CDFB"
+            magenta: "#F5C2E7"
+            cyan: "#89DCEB"
+            white: "#D9E0EE"
+
+        bright:
+            black: "#988BA2"
+            red: "#F28FAD"
+            green: "#ABE9B3"
+            yellow: "#FAE3B0"
+            blue: "#96CDFB"
+            magenta: "#F5C2E7"
+            cyan: "#89DCEB"
+            white: "#D9E0EE"
+
+# Available themes are:
+# *Basic
+# *Catppuccin
+# *PaleNight
+# *Everforest
+# *Nord
+colors: *palenight
+
+cursor:
+    style:
+        shape: Block
+        blinking: on
+        blinking_interval: 750

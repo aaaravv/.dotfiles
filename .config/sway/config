@@ -1,0 +1,337 @@
+include "colorschemes/palenight"
+
+#### VARIABLES ####
+
+# Logo key. Use Mod1 for Alt.
+set $mod Mod4
+
+# Home row direction keys, like vim
+set $left h
+set $down j
+set $up k
+set $right l
+
+## Applications
+
+# Terminal
+set $term alacritty
+
+# File Manager
+set $files nautilus
+
+# Browser
+set $firefox firefox
+set $chrome google-chrome-stable
+
+# VS Code
+set $code code
+
+# Telegram
+set $telegram telegram-desktop
+
+# Menu Wofi
+set $menu exec wofi --show=drun --line=6 --width=600 --columns=2 --hide-scroll --sort-order=alphabetical
+
+# Power Menu (wofi)
+set $power "bash ~/.config/wofi/scripts/powermenu/powerctrl.sh"
+
+# Toggle Colorschemes
+set $colors alacritty --class 'theme' -e  ~/.config/sway/scripts/theme-switcher.sh
+
+# Toggle Wallpaper
+set $walls alacritty --class 'walls' -e  ~/.config/scripts/walls.sh
+
+# Connect wifi
+set $nmtui alacritty --class 'nmtui' -e nmtui-connect
+
+# Bluetooth
+set $bluetooth alacritty --class 'bluetuith' -e bluetuith
+
+# Music
+# set $music alacritty --class 'cmus' -e cmus
+set $music museeks
+
+## Player
+set $next playerctl next
+set $previous playerctl previous
+set $pause playerctl play-pause
+
+## Workspaces
+set $next-workspace-move ~/.config/sway/scripts/move-next-workspace
+set $prev-workspace-move ~/.config/sway/scripts/move-prev-workspace
+
+
+#### DECORATION ####
+## Window gaps
+smart_gaps off
+gaps inner 5
+smart_borders on
+corner_radius 12
+
+## Window borders
+# Disable window title bar
+default_border pixel 3
+default_floating_border none
+for_window [class="some class"] border none
+
+
+## Window decoration
+# Property Name          border   backgr.   text     indicator  child_border
+client.focused     		  $base08  $base08   $base07  $base08    $base08
+client.unfocused   		  $base06  $base00   $base07  $base00    $base00
+client.focused_inactive   $base06  $base00   $base07  $base00    $base00
+client.urgent             $base08  $base08   $base00  $base08    $base08
+
+#### STARTUP ####
+
+## Start xWayland
+xwayland enable
+
+## Autostart
+exec --no-startup-id dunst
+exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+
+## Autotiling
+exec autotiling
+
+## GTK Settings
+set $gnome-schema org.gnome.desktop.interface
+
+exec_always {
+    gsettings set $gnome-schema gtk-theme 'Adwaita'
+    gsettings set $gnome-schema icon-theme 'Papirus-Dark'
+    gsettings set $gnome-schema font-name 'Inter 10.5'
+    gsettings set $gnome-schema document-font-name 'Inter 10.5'
+    gsettings set $gnome-schema monospace-font-name 'Jetbrains Mono Nerd Font 11'
+}
+
+#### CONFIGURATION ####
+
+## Font configuration
+font pango: Inter:style=Regular 12:
+
+## Wallpaper configuration
+	output * bg /home/am/Pictures/Wallpapers/70.png fill
+
+## Brightness configuration
+bindsym XF86MonBrightnessUp exec brightnessctl set +5% | brightnessctl | cut -d ':' -f 2 | cut -d ' ' -f3 | grep -o '[0-9]\+' | ~/.config/sway/scripts/notify.sh brightness
+bindsym XF86MonBrightnessDown exec brightnessctl set 5%- | brightnessctl | cut -d ':' -f 2 | cut -d ' ' -f3 | grep -o '[0-9]\+' | ~/.config/sway/scripts/notify.sh brightness
+
+# # Idle configuration
+	# exec swayidle -w \
+	  	# timeout 500 'swaylock -f' \
+	  	# timeout 1000 'swaymsg "output * dpms off"' \
+	  		# resume 'swaymsg "output * dpms on"' \
+	    # before-sleep 'playerctl pause' \
+	  	# before-sleep 'swaylock -f'
+
+# Enables inhibit_idle when playing audio
+exec sway-audio-idle-inhibit
+
+# Enable inhibit_idle when app is in fullscreen
+for_window [class=".*"] inhibit_idle fullscreen
+for_window [app_id=".*"] inhibit_idle fullscreen
+
+
+## Window configuration
+for_window [app_id="mpv"] exec $next-workspace-move
+for_window [app_id="zathura"] exec $next-workspace-move
+for_window [class="Code"] move container to workspace number 3; workspace 3
+
+## Floating windows
+for_window [app_id="bluetuith"] floating enable
+for_window [title="Firefox — Sharing Indicator"] floating enable
+for_window [app_id="telegramdesktop"] floating enable
+for_window [class="feh"] floating enable
+for_window [app_id="theme"] floating enable
+for_window [app_id="walls"] floating enable
+for_window [app_id="pavucontrol"] floating enable
+for_window [title="Developer Tools — (.*)"] floating enable
+for_window [title="DevTools - (.*)"] floating enable
+for_window [title="Spotify - (.*)"] floating enable
+
+
+## Keys Configuration
+
+# Initially enable NumLock
+input * xkb_numlock enable
+
+# Swap caps & escape key
+input * {
+    xkb_options caps:swapescape
+}
+
+
+## Input configuration (Touchpad)
+
+input "2:7:SynPS/2_Synaptics_TouchPad" {
+    dwt enabled
+    tap enabled
+    natural_scroll enabled
+    middle_emulation enabled
+}
+
+#### KEY BINDINGS ####
+
+## Basic:
+
+# Kill focused window
+bindsym $mod+q kill
+
+# Start a terminal
+bindsym $mod+Return exec $term
+
+# Start your launcher
+bindsym $mod+d exec $menu
+
+# Start code
+bindsym $mod+v exec $code
+
+# Launch Files
+bindsym $mod+f exec $files
+
+# Launch browser
+bindsym $mod+x exec $firefox
+bindsym $mod+c exec $chrome
+
+# Launch Telegram
+bindsym $mod+t exec $telegram
+
+# Launch Power Menu
+bindsym $mod+p exec $power
+
+# Drag floating windows by holding down $mod and left mouse button.
+floating_modifier $mod normal
+
+# Reload the configuration file
+bindsym $mod+Shift+c reload
+
+# Exit sway (logs you out of your Wayland session)
+bindsym $mod+Shift+e exec swaynag -t warning -m
+
+# Connect to wifi
+bindsym $mod+n exec $nmtui
+
+# Exec theme-swticher script
+bindsym $mod+y exec $colors
+
+# Launch Music Player
+bindsym $mod+m exec $music
+
+# Launch Bluetuith
+bindsym $mod+b exec $bluetooth
+
+# Exec wall-switch script
+bindsym $mod+o exec $walls
+
+# Multimedia Keys
+bindsym XF86AudioMute exec pulsemixer --toggle-mute --get-mute | ~/.config/sway/scripts/notify.sh muted
+bindsym XF86AudioRaiseVolume exec ponymix increase 5 | ~/.config/sway/scripts/notify.sh audio
+bindsym XF86AudioLowerVolume exec ponymix decrease 5 | ~/.config/sway/scripts/notify.sh audio
+bindsym XF86AudioPlay exec playerctl play-pause
+bindsym XF86AudioNext exec playerctl next
+bindsym XF86AudioPrev exec playerctl previous
+
+# Exec Playerctl Commands
+bindsym Mod1+period exec $next
+bindsym Mod1+comma exec $previous
+bindsym Mod1+space exec $pause
+
+
+## Screenshot:
+bindsym Print exec grim ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%S).png && notify-send "Screenshot captured!"
+bindsym Shift+Print exec grim -g "$(slurp)" ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%S).png && notify-send "Screenshot captured!"
+bindsym Ctrl+Print exec grim - | wl-copy && notify-send "Screenshot copied to Clipboard!"
+bindsym Ctrl+Shift+Print exec grim -g "$(slurp)" - | wl-copy && notify-send "Screenshot copied to Clipboard!"
+
+## Moving around:
+
+# Move your focus around
+bindsym $mod+$left focus left
+bindsym $mod+$down focus down
+bindsym $mod+$up focus up
+bindsym $mod+$right focus right
+
+# Move your focus around
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# Move the focused window with the same, but add Shift
+bindsym $mod+Shift+$left move left
+bindsym $mod+Shift+$down move down
+bindsym $mod+Shift+$up move up
+bindsym $mod+Shift+$right move right
+
+# Move the focused window
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+## Workspaces:
+
+# Switch to workspace
+bindsym $mod+1 workspace number 1
+bindsym $mod+2 workspace number 2
+bindsym $mod+3 workspace number 3
+bindsym $mod+4 workspace number 4
+bindsym $mod+5 workspace number 5
+
+# Move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace number 1
+bindsym $mod+Shift+2 move container to workspace number 2
+bindsym $mod+Shift+3 move container to workspace number 3
+bindsym $mod+Shift+4 move container to workspace number 4
+bindsym $mod+Shift+5 move container to workspace number 5
+
+# Move windows to next workspace
+bindsym Alt+j move container to workspace prev; workspace prev
+bindsym Alt+k move container to workspace next; workspace next
+
+# Move windows to next/prev workspaces
+bindsym $mod+Ctrl+k exec $next-workspace-move
+bindsym $mod+Ctrl+j exec $prev-workspace-move
+
+# Switch next/prev workspaces
+bindsym Mod1+Shift+$right workspace next_on_output
+bindsym Mod1+Shift+$left workspace prev_on_output
+
+# Cycle between workspaces
+bindsym $mod+tab workspace next_on_output
+
+# Cycle through workspaces
+bindsym Alt+tab workspace back_and_forth
+
+
+## Scratchpad:
+# Move the currently focused window to the scratchpad
+bindsym $mod+Shift+s move scratchpad
+
+# Cycle through multiple scratchpad windows.
+bindsym $mod+s scratchpad show
+
+## Layout stuff:
+
+# Make the current focus fullscreen
+bindsym $mod+shift+f fullscreen
+
+# Toggle the current focus between tiling and floating mode
+bindsym $mod+Shift+space floating toggle
+
+# Swap focus between the tiling area and the floating area
+bindsym $mod+space focus mode_toggle
+
+# Move focus to the parent container
+bindsym $mod+a focus parent
+
+# Switch between layouts
+bindsym $mod+Shift+x layout toggle split
+
+## Status Bar:
+bar {
+    swaybar_command waybar
+}
+
+include /etc/sway/config.d/*

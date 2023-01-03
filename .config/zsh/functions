@@ -1,0 +1,204 @@
+### ZSH FUNCTIONS ###
+
+# cf [cd fuzzy]: cd from $HOME
+cf() {
+    if command -v fd >/dev/null; then
+        var="$(fd -d5 -td --follow --search-path ~ 2>/dev/null | fzf --prompt "cd ")"
+    else
+        var="$(find -L "$HOME" -maxdepth 5 -type d -not -path '*/\.*' 2>/dev/null | fzf --prompt "cd ")"
+    fi
+    [ -n "$var" ] && cd "$var" 2>/dev/null && return 0
+}
+
+# ch [cd hidden/here]: cd from current dir including hidden
+ch() {
+    if command -v fd >/dev/null; then
+        var="$(fd -d5 -td --follow --hidden --exclude '\.git*' 2>/dev/null | fzf --prompt "cd ")"
+    else
+        var="$(find -L . -maxdepth 5 -type d -not -path '*/\.git*' 2>/dev/null | fzf --prompt "cd ")"
+    fi
+    [ -n "$var" ] && cd "$var" 2>/dev/null && return 0
+}
+
+# opens a file with xdg-open
+open() {
+	xdg-open "$(find -type f | fzf)"
+}
+
+# fe [fuzzy editor] : opens a file in $EDITOR
+function fe() {
+  var="$(fd -d5 -tf --follow --hidden --search-path ~ 2>/dev/null | fzf --prompt "micro ")"
+    [ -n "$var" ] && "$EDITOR" "$var"
+    devar; return 0
+}
+
+# feh [feh fuzzy]: open a file in feh
+fehf() {
+    var="$(fd -d5 -tf --follow --hidden --search-path ~ 2>/dev/null | fzf --prompt "feh ")"
+    [ -n "$var" ] && feh --scale-down --auto-zoom "$var"
+    devar; return 0
+}
+
+# fvc [fuzzy code] : opens a file in VS Code
+function fvc() {
+    var="$(fd -d5 -td --follow --hidden --search-path ~ 2>/dev/null | fzf --prompt "code ")"
+    [ -n "$var" ] && code "$var"
+    devar; return 0
+}
+
+# fz [fuzzy zathura] : opens a file in zathura
+function fz() {
+  local file=$(fzf --multi --reverse) #get file from fzf
+  if [[ $file ]]; then
+    for prog in $(echo $file); #open all the selected files
+    do; zathura $prog; done;
+  else
+    echo "cancelled fzf"
+  fi
+}
+
+## ARCHIVE EXTRACTION
+# usage: ex <file>
+ex ()
+{
+  if [ -f "$1" ] ; then
+    case $1 in
+      *.tar.bz2)   tar xjf $1   ;;
+      *.tar.gz)    tar xzf $1   ;;
+      *.bz2)       bunzip2 $1   ;;
+      *.rar)       unrar x $1   ;;
+      *.gz)        gunzip $1    ;;
+      *.tar)       tar xf $1    ;;
+      *.tbz2)      tar xjf $1   ;;
+      *.tgz)       tar xzf $1   ;;
+      *.zip)       unzip $1     ;;
+      *.Z)         uncompress $1;;
+      *.7z)        7z x $1      ;;
+      *.deb)       ar x $1      ;;
+      *.tar.xz)    tar xf $1    ;;
+      *.tar.zst)   unzstd $1    ;;
+      *)           echo "'$1' cannot be extracted via ex()" ;;
+    esac
+  else
+    echo "'$1' is not a valid file"
+  fi
+}
+
+# navigation
+.. () {
+  local d=""
+  local limit="$1"
+
+  # Default to limit of 1
+  if [ -z "$limit" ] || [ "$limit" -le 0 ]; then
+    limit=1
+  fi
+
+  for ((i=1;i<=limit;i++)); do
+    d="../$d"
+  done
+
+  # perform cd. Show error if cd fails
+  if ! cd "$d"; then
+    echo "Couldn't go up $limit dirs.";
+  fi
+}
+
+# Make dir & cd
+mcd() {
+    mkdir -p "$1" && cd "$1"
+}
+
+# hst [history]: search command line history & copy selected
+hst() {
+    var="$(history | cut -c8- | fzf --multi --tac --prompt "history ")"
+    [ -n "$var" ] && echo "$var" | wl-copy && return 0
+}
+
+## Package Manager ## (Pacman & Yay)
+
+if [ -f "/etc/arch-release" ]; then
+# pacls [pacman list]: list all installed packages
+pls() {
+    var="$(pacman -Qq | fzf --height "100%" --multi --preview "pacman -Qi {1}" --preview-window "right:70%" --prompt "pkg ")"
+    [ -n "$var" ] && echo "$var" && sudo pacman -R $var && return 0
+}
+
+# pacfd [pacman find]: find a package
+pfd() {
+    var="$(pacman -Slq | fzf --height "100%" --multi --preview "pacman -Si {1}" --preview-window "right:70%" --prompt "pkg ")"
+    [ -n "$var" ] && sudo pacman -S  $var && return 0
+}
+
+# yayls [yay list]: list all installed AUR packages
+yls() {
+    var="$(yay -Qmq | fzf --height "100%" --multi --preview "yay -Qi {1}" --preview-window "right:70%" --prompt "pkg ")"
+    [ -n "$var" ] && echo "$var" && yay -R $var && return 0
+}
+
+# yayfd [yay find]: find an AUR package
+yfd() {
+    var="$(yay -Slaq | fzf --height "100%" --multi --preview "yay -Si {1}" --preview-window "right:70%" --prompt "pkg ")"
+    [ -n "$var" ] && yay -S $var && return 0
+}
+fi
+
+#fuzzy wifi
+wifi() {
+	has() {
+	  local verbose=false
+	  if [[ $1 == '-v' ]]; then
+	    verbose=true
+	    shift
+	  fi
+	  for c in "$@"; do c="${c%% *}"
+	    if ! command -v "$c" &> /dev/null; then
+	      [[ "$verbose" == true ]] && err "$c not found"
+	      return 1
+	    fi
+	  done
+	}
+	
+	err() {
+	  printf '\e[31m%s\e[0m\n' "$*" >&2
+	}
+	
+	die() {
+	  (( $# > 0 )) && err "$*"
+	  exit 1
+	}
+	
+	has -v nmcli fzf || die
+	
+	nmcli -f 'bssid,signal,ssid' --color yes device wifi |
+	  fzf \
+	  --with-nth=2.. \
+	  --ansi \
+	  --height=40% \
+	  --reverse \
+	  --cycle \
+	  --inline-info \
+	  --header-lines=1 \
+	  --bind="enter:execute:nmcli -a device wifi connect {1}"
+}
+
+# gsc: [git sparse clone] # clones a specific dir from git repo
+
+function gsc() (
+  rurl="$1" localdir="$2" && shift 2
+
+  mkdir -p "$localdir"
+  cd "$localdir"
+
+  git init
+  git remote add -f origin "$rurl"
+
+  git config core.sparseCheckout true
+
+  # Loops over remaining args
+  for i; do
+    echo "$i" >> .git/info/sparse-checkout
+  done
+
+  git pull origin master
+)

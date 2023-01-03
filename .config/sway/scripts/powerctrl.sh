@@ -1,0 +1,1 @@
+/home/am/.config/wofi/scripts/powermenu/powerctrl.sh

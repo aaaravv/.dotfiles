@@ -1,0 +1,223 @@
+@import "colorschemes/palenight.css"; 
+
+* {
+    border: none;
+    font-weight: bold;
+    font-family: "InterNerd Font";
+    font-size: 12px;
+}
+
+/* The whole bar */
+window#waybar {
+	background: #171717; 
+	color: @base07; 
+	transition-duration: 0.5s;
+}
+
+window#waybar.hidden {
+	opacity: 0.2;
+}
+
+#waybar.empty #window{
+	padding: 0;
+	margin: 0;
+}
+
+#waybar.hidden #window{
+	padding: 0;
+}
+
+/* Each module */
+
+#battery,
+#clock,
+#custom-media,
+#custom-spotify,
+#memory,
+#bluetooth, 
+#network,
+#pulseaudio,
+#window,
+#workspaces,
+#cpu,
+#custom-weather,
+#tray {
+	padding: 0 6px;
+}
+
+/* floating modules */
+#workspaces,
+#custom-media,
+#custom-spotify,
+#custom-weather,
+#clock,
+#pulseaudio,
+#battery,
+#network,
+#tray {
+  background-color: #1e222a;
+  padding: 0 10px;
+  margin: 2px 0 4px 0;
+  border: 3px solid rgba(0, 0, 0, 0);
+  border-radius: 90px;
+  background-clip: padding-box;
+}
+
+#memory{
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+#battery{
+	animation-timing-function: linear;
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
+}
+
+/* Each critical module */
+#memory.critical{
+    color: @base01;
+}
+
+#battery.critical{
+    color: @base01;
+}
+
+#battery.warning{
+    color: @base0B;
+}
+
+/* Each critical that should blink */
+#memory.critical{
+    animation-name: blink-critical;
+    animation-duration: 2s;
+}
+
+#battery.critical{
+    animation-name: blink-critical;
+    animation-duration: 2s;
+}
+
+/* Each warning */
+#network.disconnected,
+#memory.warning{
+    color: @base03;
+}
+
+#bluetooth{
+	color: @base05;
+}
+
+#cpu{
+	color: @base06;	
+}
+
+tooltip { 
+	border-radius: 5px;
+	background-color: @base04;
+	color: @base00; 
+}
+ 
+tooltip label {
+	padding: 5px;
+}
+
+/* Workspaces stuff */
+
+#workspaces button {
+    color: @base0B;
+    padding: 0 4px;
+   	min-width: 20px;
+}
+
+#workspaces button.focused {
+    color: @base02;
+}
+
+#workspaces button.urgent {
+    border-color: @base05;
+    color: @base09;
+}
+
+#workspaces button.persistent{
+	color: rgba(224, 224, 224, 0.5);
+}
+
+#window {
+	padding: 0 5px;
+}
+
+#network {
+    color:@base02;
+}
+
+#battery {
+    color:@base02;
+}
+
+#network.format-disconnected{
+    color: @base02;
+    font-size: 14px;
+}
+
+#memory {
+    color: @base03;
+}
+
+#custom-spotify {
+    color: @base0A;
+}
+
+#custom-media{
+    color: @base0E;
+}
+
+#clock{
+    color: @base0C;
+}
+
+#pulseaudio {
+    color: @base09;
+}
+
+#pulseaudio.muted {
+    color: @base09;
+    margin: 0 5px 0 5px;
+}
+
+#pulseaudio.source-muted {
+    color: @base09;
+}
+
+#tray > .passive {
+    -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+}
+
+@keyframes blink-warning {
+    70% {
+        color: @base08;
+    }
+
+    to {
+        color: @base08;
+    }
+}
+
+@keyframes blink-critical {
+    70% {
+      color: @base07;
+    }
+
+    to {
+        color: @base07;
+    }
+}
+
+
+
+
