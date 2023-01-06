@@ -5,7 +5,6 @@ eval "$(starship init zsh)"
 source ~/.config/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
 source ~/.config/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
 source ~/.config/zsh/plugins/sudo/sudo.plugin.zsh
-source ~/.config/zsh/plugins/forgit/forgit.plugin.zsh
 source ~/.config/zsh/plugins/fzf-tab/fzf-tab.plugin.zsh
 source ~/.config/zsh/plugins/bgnotify/bgnotify.plugin.zsh
 
