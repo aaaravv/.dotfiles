@@ -33,34 +33,30 @@ font:
 
 ### Color Schemes ###
 schemes:
-    basic: &basic
+    basic: &rosepine
         primary:
-            background: "#151515"
-            foreground: "#ffffff"
-
-        cursor:
-            text: "#ffffff"
-            cursor: "#ffffff"
+            background: "#191724"
+            foreground: "#e0def4"
 
         normal:
             black: "#131020"
-            red: "#d78787"
+            red: "#ebbcba"
             green: "#00E676"
-            yellow: "#ffdf00"
-            blue: "#00B0FF"
-            magenta: "#f299e6"
-            cyan: "#89DCEB"
-            white: "#eaeaea"
+            yellow: "#f6c177"
+            blue: "#31748f"
+            magenta: "#eb6f92"
+            cyan: "#9ccfd8"
+            white: "#e0def4"
 
         bright:
             black: "#131020"
-            red: "#d78787"
+            red: "#ebbcba"
             green: "#00E676"
-            yellow: "#ffdf00"
-            blue: "#00B0FF"
-            magenta: "#f299e6"
-            cyan: "#B5E8E0"
-            white: "#eaeaea"
+            yellow: "#f6c177"
+            blue: "#31748f"
+            magenta: "#eb6f92"
+            cyan: "#9ccfd8"
+            white: "#e0def4"
 
     palenight: &palenight
         primary:
