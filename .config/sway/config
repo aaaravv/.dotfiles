@@ -1,6 +1,8 @@
-include "colorschemes/palenight"
+include "colorschemes/palenight.config"
 
-#### VARIABLES ####
+##########################################################
+					# Variables #
+##########################################################
 
 # Logo key. Use Mod1 for Alt.
 set $mod Mod4
@@ -10,8 +12,6 @@ set $left h
 set $down j
 set $up k
 set $right l
-
-## Applications
 
 # Terminal
 set $term alacritty
@@ -47,11 +47,10 @@ set $nmtui alacritty --class 'nmtui' -e nmtui-connect
 # Bluetooth
 set $bluetooth alacritty --class 'bluetuith' -e bluetuith
 
-# Music
 # set $music alacritty --class 'cmus' -e cmus
 set $music museeks
 
-## Player
+# Player
 set $next playerctl next
 set $previous playerctl previous
 set $pause playerctl play-pause
@@ -61,69 +60,79 @@ set $next-workspace-move ~/.config/sway/scripts/move-next-workspace
 set $prev-workspace-move ~/.config/sway/scripts/move-prev-workspace
 
 
-#### DECORATION ####
-## Window gaps
+##########################################################
+					# Decoration #
+##########################################################
+
 smart_gaps off
 gaps inner 5
 smart_borders on
 corner_radius 12
-
-## Window borders
-# Disable window title bar
 default_border pixel 3
 default_floating_border none
 for_window [class="some class"] border none
 
-
-## Window decoration
 # Property Name          border   backgr.   text     indicator  child_border
-client.focused     		  $base08  $base08   $base07  $base08    $base08
+client.focused     		  $base08  $base08   $base07  $base04    $base04
 client.unfocused   		  $base06  $base00   $base07  $base00    $base00
 client.focused_inactive   $base06  $base00   $base07  $base00    $base00
-client.urgent             $base08  $base08   $base00  $base08    $base08
+client.urgent             $base08  $base08   $base00  $base04    $base04
 
-#### STARTUP ####
 
-## Start xWayland
+##########################################################
+					# Startup #
+##########################################################
+
+# Start xWayland
 xwayland enable
 
-## Autostart
+# Autostart
 exec --no-startup-id dunst
 exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 
-## Autotiling
+# Autotiling
 exec autotiling
 
-## GTK Settings
+# GTK Settings
 set $gnome-schema org.gnome.desktop.interface
 
 exec_always {
-    gsettings set $gnome-schema gtk-theme 'Adwaita'
+    gsettings set $gnome-schema gtk-theme 'paradise'
     gsettings set $gnome-schema icon-theme 'Papirus-Dark'
-    gsettings set $gnome-schema font-name 'Inter 10.5'
-    gsettings set $gnome-schema document-font-name 'Inter 10.5'
-    gsettings set $gnome-schema monospace-font-name 'Jetbrains Mono Nerd Font 11'
+    gsettings set $gnome-schema font-name 'Inter 11'
+    gsettings set $gnome-schema document-font-name 'Inter 11'
+    gsettings set $gnome-schema monospace-font-name 'Jetbrains Mono Nerd Font 10'
 }
 
-#### CONFIGURATION ####
+# Initially enable NumLock
+input * xkb_numlock enable
 
-## Font configuration
-font pango: Inter:style=Regular 12:
+# Swap caps & escape key
+input * {
+    xkb_options caps:swapescape
+}
 
-## Wallpaper configuration
-	output * bg /home/am/Pictures/Wallpapers/70.png fill
 
-## Brightness configuration
+##########################################################
+					# Wallpaper #
+##########################################################
+
+output * bg /home/am/Pictures/Wallpapers/70.png fill
+
+
+##########################################################
+			# Brightness & Idle Configuration #
+##########################################################
+
 bindsym XF86MonBrightnessUp exec brightnessctl set +5% | brightnessctl | cut -d ':' -f 2 | cut -d ' ' -f3 | grep -o '[0-9]\+' | ~/.config/sway/scripts/notify.sh brightness
 bindsym XF86MonBrightnessDown exec brightnessctl set 5%- | brightnessctl | cut -d ':' -f 2 | cut -d ' ' -f3 | grep -o '[0-9]\+' | ~/.config/sway/scripts/notify.sh brightness
 
-# # Idle configuration
-	# exec swayidle -w \
-	  	# timeout 500 'swaylock -f' \
-	  	# timeout 1000 'swaymsg "output * dpms off"' \
-	  		# resume 'swaymsg "output * dpms on"' \
-	    # before-sleep 'playerctl pause' \
-	  	# before-sleep 'swaylock -f'
+# exec swayidle -w \
+# timeout 500 'swaylock -f' \
+# timeout 1000 'swaymsg "output * dpms off"' \
+# resume 'swaymsg "output * dpms on"' \
+# before-sleep 'playerctl pause' \
+# before-sleep 'swaylock -f'
 
 # Enables inhibit_idle when playing audio
 exec sway-audio-idle-inhibit
@@ -133,12 +142,15 @@ for_window [class=".*"] inhibit_idle fullscreen
 for_window [app_id=".*"] inhibit_idle fullscreen
 
 
-## Window configuration
+##########################################################
+				# Window Configuration #
+##########################################################
+
 for_window [app_id="mpv"] exec $next-workspace-move
 for_window [app_id="zathura"] exec $next-workspace-move
 for_window [class="Code"] move container to workspace number 3; workspace 3
 
-## Floating windows
+# Floating windows
 for_window [app_id="bluetuith"] floating enable
 for_window [title="Firefox — Sharing Indicator"] floating enable
 for_window [app_id="telegramdesktop"] floating enable
@@ -151,18 +163,8 @@ for_window [title="DevTools - (.*)"] floating enable
 for_window [title="Spotify - (.*)"] floating enable
 
 
-## Keys Configuration
 
-# Initially enable NumLock
-input * xkb_numlock enable
-
-# Swap caps & escape key
-input * {
-    xkb_options caps:swapescape
-}
-
-
-## Input configuration (Touchpad)
+# Input configuration (Touchpad)
 
 input "2:7:SynPS/2_Synaptics_TouchPad" {
     dwt enabled
@@ -171,9 +173,10 @@ input "2:7:SynPS/2_Synaptics_TouchPad" {
     middle_emulation enabled
 }
 
-#### KEY BINDINGS ####
 
-## Basic:
+##########################################################
+					# Key Bindins #
+##########################################################
 
 # Kill focused window
 bindsym $mod+q kill
@@ -237,14 +240,11 @@ bindsym Mod1+period exec $next
 bindsym Mod1+comma exec $previous
 bindsym Mod1+space exec $pause
 
-
-## Screenshot:
+# Screenshot:
 bindsym Print exec grim ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%S).png && notify-send "Screenshot captured!"
 bindsym Shift+Print exec grim -g "$(slurp)" ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%S).png && notify-send "Screenshot captured!"
 bindsym Ctrl+Print exec grim - | wl-copy && notify-send "Screenshot copied to Clipboard!"
 bindsym Ctrl+Shift+Print exec grim -g "$(slurp)" - | wl-copy && notify-send "Screenshot copied to Clipboard!"
-
-## Moving around:
 
 # Move your focus around
 bindsym $mod+$left focus left
@@ -269,8 +269,6 @@ bindsym $mod+Shift+Left move left
 bindsym $mod+Shift+Down move down
 bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
-
-## Workspaces:
 
 # Switch to workspace
 bindsym $mod+1 workspace number 1
@@ -305,31 +303,29 @@ bindsym $mod+tab workspace next_on_output
 bindsym Alt+tab workspace back_and_forth
 
 
-## Scratchpad:
-# Move the currently focused window to the scratchpad
+##########################################################
+					# Scratchpad #
+##########################################################
+
 bindsym $mod+Shift+s move scratchpad
 
-# Cycle through multiple scratchpad windows.
 bindsym $mod+s scratchpad show
 
-## Layout stuff:
+##########################################################
+					# Layout #
+##########################################################
 
-# Make the current focus fullscreen
 bindsym $mod+shift+f fullscreen
-
-# Toggle the current focus between tiling and floating mode
 bindsym $mod+Shift+space floating toggle
-
-# Swap focus between the tiling area and the floating area
 bindsym $mod+space focus mode_toggle
-
-# Move focus to the parent container
 bindsym $mod+a focus parent
-
-# Switch between layouts
 bindsym $mod+Shift+x layout toggle split
 
-## Status Bar:
+
+##########################################################
+					# Status Bar #
+##########################################################
+
 bar {
     swaybar_command waybar
 }
