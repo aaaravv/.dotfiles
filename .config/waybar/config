@@ -142,7 +142,7 @@
 		"return-type": "json",
 		"max-length": 25,
 		"on-click": "playerctl play-pause",
-		"exec": "playerctl metadata --player=chromium --format '{\"text\": \" {{markup_escape(title)}}\", \"alt\": \"{{status}}\", \"class\": \"{{status}}\"}' -F"
+		"exec": "playerctl --player=harmonoid metadata  --format '{\"text\": \" {{markup_escape(title)}}\", \"alt\": \"{{status}}\", \"class\": \"{{status}}\"}' -F"
 	},
 	"custom/spotify": {
 			"format": "{icon}{}",
@@ -152,7 +152,7 @@
 			"return-type": "json",
 			"max-length": 20,
 			"on-click": "playerctl play-pause",
-			"exec": "playerctl --player=spotify metadata --format '{\"text\": \" {{artist}} • {{markup_escape(title)}}\", \"alt\": \"{{status}}\", \"class\": \"{{status}}\"}' -F"
+			"exec": "playerctl --player=spotify metadata --format '{\"text\": \" {{markup_escape(title)}} • {{artist}}\", \"alt\": \"{{status}}\", \"class\": \"{{status}}\"}' -F"
 		}
 }
 
