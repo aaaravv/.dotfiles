@@ -33,8 +33,3 @@ export XDG_STATE_HOME="$HOME/.local/state"
 
 ### Remember
 The only true way to be a minimalist is to recursively force rm your entire ~/!
-
-
-## Credits
-
-Credits to [JITESH](https://github.com/pixxel8/) for his custom  [fuzzy functions](https://github.com/pixxel8/dotfiles/blob/master/shell/fzfrc).
