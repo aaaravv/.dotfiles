@@ -65,6 +65,7 @@ set $prev-workspace-move ~/.config/sway/scripts/move-prev-workspace
 ##########################################################
 
 smart_gaps off
+shadows on
 gaps inner 5
 smart_borders on
 corner_radius 12
@@ -117,7 +118,7 @@ input * {
                     # Wallpaper #
 ##########################################################
 
-output * bg /home/am/Pictures/Wallpapers/70.png fill
+output * bg /home/am/Pictures/Wallpapers/62.jpg fill
 
 
 ##########################################################
