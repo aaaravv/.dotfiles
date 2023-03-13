@@ -64,11 +64,14 @@ set $prev-workspace-move ~/.config/sway/scripts/move-prev-workspace
                     # Decoration #
 ##########################################################
 
-smart_gaps off
+gaps inner 3
+gaps outer 3
+smart_gaps on
 shadows on
+shadow_color #0000007F
 gaps inner 5
-smart_borders on
-corner_radius 12
+smart_borders off
+corner_radius 10
 default_border pixel 3
 default_floating_border none
 for_window [class="some class"] border none
@@ -98,6 +101,7 @@ exec autotiling
 set $gnome-schema org.gnome.desktop.interface
 
 exec_always {
+	gsettings set $gnome-schema cursor-theme 'Bibata-Modern-Classic'
     gsettings set $gnome-schema gtk-theme 'paradise'
     gsettings set $gnome-schema icon-theme 'Papirus-Dark'
     gsettings set $gnome-schema font-name 'Inter 11'
@@ -118,7 +122,7 @@ input * {
                     # Wallpaper #
 ##########################################################
 
-output * bg /home/am/Pictures/Wallpapers/62.jpg fill
+output * bg /home/am/Pictures/Wallpapers/52.png fill
 
 
 ##########################################################
@@ -128,12 +132,12 @@ output * bg /home/am/Pictures/Wallpapers/62.jpg fill
 bindsym XF86MonBrightnessUp exec brightnessctl set +5% | brightnessctl | cut -d ':' -f 2 | cut -d ' ' -f3 | grep -o '[0-9]\+' | ~/.config/sway/scripts/notify.sh brightness
 bindsym XF86MonBrightnessDown exec brightnessctl set 5%- | brightnessctl | cut -d ':' -f 2 | cut -d ' ' -f3 | grep -o '[0-9]\+' | ~/.config/sway/scripts/notify.sh brightness
 
-# exec swayidle -w \
-# timeout 500 'swaylock -f' \
-# timeout 1000 'swaymsg "output * dpms off"' \
-# resume 'swaymsg "output * dpms on"' \
-# before-sleep 'playerctl pause' \
-# before-sleep 'swaylock -f'
+exec swayidle -w \
+timeout 500 'swaylock -f' \
+timeout 1000 'swaymsg "output * dpms off"' \
+resume 'swaymsg "output * dpms on"' \
+before-sleep 'playerctl pause' \
+before-sleep 'swaylock -f'
 
 # Enables inhibit_idle when playing audio
 exec sway-audio-idle-inhibit
@@ -158,11 +162,27 @@ for_window [app_id="telegramdesktop"] floating enable
 for_window [class="feh"] floating enable
 for_window [app_id="theme"] floating enable
 for_window [app_id="walls"] floating enable
+for_window [app_id="org.telegram.desktop"] floating enable, resize set 60ppt 80ppt
+for_window [app_id="nmtui"] floating enable, resize set 40ppt 90ppt
 for_window [app_id="pavucontrol"] floating enable
 for_window [title="Developer Tools — (.*)"] floating enable
 for_window [title="DevTools - (.*)"] floating enable
-for_window [title="Spotify - (.*)"] floating enable
+for_window [class="Spotify"] floating enable, resize set 90ppt 90ppt
+for_window [title="Firefox — Sharing Indicator"] floating enable, move scratchpad
+for_window [title="Developer Tools — (.*)"] floating enable
+for_window [title="DevTools - (.*)"] floating enable
+for_window [app_id="org.gnome.Nautilus"] border none
+for_window [class="notion-app"] border none
+for_window [window_role = "pop-up"] floating enable
+for_window [window_role = "bubble"] floating enable
+for_window [shell="xdg_shell"] title_format "%title (%app_id)"
+for_window [shell="x_wayland"] title_format "%class - %title"
 
+
+# Opacity
+
+for_window [app_id="Alacritty"] opacity 0.95
+for_window [app_id="bluetuith"] opacity 0.95
 
 
 # Input configuration (Touchpad)
